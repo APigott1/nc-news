@@ -21,8 +21,7 @@ const ArticleList = () => {
       {isLoading ? (
         <h2>Loading...</h2>
       ) : (
-        <ul>
-          {console.log(articles)}
+        <ul className="articles-list">
           {articles.map((article) => (
             <ArticleBasic key={article.article_id} article={article} />
           ))}

@@ -9,3 +9,38 @@ header {
   align-items: center;
   justify-content: right;
 }
+
+.articles-list {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.article-basic {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  padding: 10px;
+  border-style: solid;
+  border-radius: 15px;
+  border-color: black;
+}
+
+.article-info {
+  justify-content: center;
+  padding: 10px;
+  margin: 10px;
+  border-style: solid;
+  border-radius: 15px;
+  border-color: black;
+  flex-grow: 1;
+}
+
+.article-img {
+  width: 30%;
+  height: 30%;
+}
+
+.article-contents {
+  display: flex;
+}
