@@ -6,7 +6,7 @@ const Header = () => {
         <h2>grumpy19</h2>
         <img
           src="https://vignette.wikia.nocookie.net/mrmen/images/7/78/Mr-Grumpy-3A.PNG/revision/latest?cb=20170707233013"
-          alt="user's image"
+          alt="grumpy19's account"
           height="50px"
           width="50px"
         />
