@@ -8,6 +8,7 @@ const Article = () => {
   const [isLoadingArticle, setIsLoadingArticle] = useState(true);
   const [isLoadingComments, setIsLoadingComments] = useState(0); // 0 represents not requested, 1 represents requested but not loaded, -1 represents loaded
   const [comments, setComments] = useState([]);
+  const [error, setError] = useState(null);
 
   const createdAt = new Date(article.created_at);
   const options = {
@@ -34,12 +35,22 @@ const Article = () => {
     fetch(
       `https://nc-news-backend-sgvu.onrender.com/api/articles/${article_id}`
     )
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.ok) return res.json();
+        else return Promise.reject(res);
+      })
       .then((articleData) => {
         setIsLoadingArticle(false);
         setArticle(articleData.article);
+      })
+      .catch((error) => {
+        setError(error);
       });
   }, []);
+
+  if (error) {
+    return <p>Error: could not load article</p>;
+  }
 
   if (isLoadingArticle) return <p>Loading article...</p>;
 
