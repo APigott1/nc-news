@@ -28,7 +28,7 @@ const ArticleList = () => {
               to={`/articles/${article.article_id}`}
               key={article.article_id}
             >
-              <ArticleBasic key={article.article_id} article={article} />
+              <ArticleBasic article={article} />
             </Link>
           ))}
         </ul>
