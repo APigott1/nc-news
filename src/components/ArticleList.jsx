@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import FilterBar from "./FilterBar";
 import ArticleBasic from "./ArticleBasic";
 
@@ -23,7 +24,12 @@ const ArticleList = () => {
       ) : (
         <ul className="articles-list">
           {articles.map((article) => (
-            <ArticleBasic key={article.article_id} article={article} />
+            <Link
+              to={`/articles/${article.article_id}`}
+              key={article.article_id}
+            >
+              <ArticleBasic key={article.article_id} article={article} />
+            </Link>
           ))}
         </ul>
       )}
