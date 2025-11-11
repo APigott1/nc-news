@@ -1,7 +1,11 @@
+import { Link } from "react-router-dom";
+
 const Header = () => {
   return (
     <header>
-      <h1>Northcoder News</h1>
+      <Link to="/">
+        <h1>Northcoder News</h1>
+      </Link>
       <div className="user-info">
         <h2>grumpy19</h2>
         <img
