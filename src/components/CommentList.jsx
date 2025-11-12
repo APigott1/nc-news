@@ -1,3 +1,5 @@
+import CommentInput from "./CommentInput";
+
 const CommentList = ({ comments }) => {
   const options = {
     year: "numeric",
@@ -8,6 +10,7 @@ const CommentList = ({ comments }) => {
   };
   return (
     <ul>
+      <CommentInput />
       {comments.map((comment) => {
         const createdAt = new Date(comment.created_at);
         return (

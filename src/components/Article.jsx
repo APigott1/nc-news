@@ -9,6 +9,7 @@ const Article = () => {
   const [isLoadingComments, setIsLoadingComments] = useState(0); // 0 represents not requested, 1 represents requested but not loaded, -1 represents loaded
   const [comments, setComments] = useState([]);
   const [error, setError] = useState(null);
+  const [userLikes, setUserLikes] = useState(0);
 
   const createdAt = new Date(article.created_at);
   const options = {
@@ -17,18 +18,6 @@ const Article = () => {
     day: "numeric",
     hour: "numeric",
     minute: "numeric",
-  };
-
-  const handleClick = () => {
-    setIsLoadingComments(1);
-    fetch(
-      `https://nc-news-backend-sgvu.onrender.com/api/articles/${article_id}/comments`
-    )
-      .then((res) => res.json())
-      .then((commentsData) => {
-        setIsLoadingComments(-1);
-        setComments(commentsData.comments);
-      });
   };
 
   useEffect(() => {
@@ -44,18 +33,59 @@ const Article = () => {
         setArticle(articleData.article);
       })
       .catch((error) => {
-        setError(error);
+        setError({ status: "articleError", msg: "could not find article" });
       });
   }, []);
 
-  if (error) {
-    return <p>Error: could not load article</p>;
+  const handleClick = () => {
+    setIsLoadingComments(1);
+    fetch(
+      `https://nc-news-backend-sgvu.onrender.com/api/articles/${article_id}/comments`
+    )
+      .then((res) => res.json())
+      .then((commentsData) => {
+        setIsLoadingComments(-1);
+        setComments(commentsData.comments);
+      });
+  };
+
+  const handleVote = (vote) => {
+    setUserLikes((curLikes) => curLikes + vote);
+    fetch(
+      `https://nc-news-backend-sgvu.onrender.com/api/articles/${article_id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ inc_votes: vote }),
+      }
+    )
+      .then((res) => {
+        if (res.ok) return res.json();
+        else return Promise.reject(res);
+      })
+      .then((articleData) => {
+        setArticle({
+          comment_count: article.comment_count,
+          ...articleData.article,
+        });
+        setUserLikes(0);
+      })
+      .catch((error) => {
+        setError({ status: "voteError", msg: "voting not available" });
+        setUserLikes(0);
+      });
+  };
+
+  if (error && error.status === "articleError") {
+    return <p>Error: {error.msg}</p>;
   }
 
   if (isLoadingArticle) return <p>Loading article...</p>;
 
   return (
-    <div>
+    <article>
       <div className="article">
         <h2>{article.title}</h2>
 
@@ -68,15 +98,30 @@ const Article = () => {
         <p>Author: {article.author}</p>
         <p>Topic: {article.topic}</p>
         <p>Body: {article.body}</p>
-        <p>Votes: {article.votes}</p>
+        <p>Votes: {article.votes + userLikes}</p>
         <Link>
           <p onClick={handleClick}>Comments: {article.comment_count}</p>
         </Link>
         <p>Published: {createdAt.toLocaleDateString(undefined, options)}</p>
+        <button
+          onClick={() => {
+            handleVote(1);
+          }}
+        >
+          Like
+        </button>
+        <button
+          onClick={() => {
+            handleVote(-1);
+          }}
+        >
+          Dislike
+        </button>
+        {error && error.status === "voteError" && <p>{error.msg}</p>}
       </div>
       {isLoadingComments === 1 && <p>Loading comments...</p>}
       {isLoadingComments === -1 && <CommentList comments={comments} />}
-    </div>
+    </article>
   );
 };
 
