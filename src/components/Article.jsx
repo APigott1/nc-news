@@ -37,9 +37,9 @@ const Article = () => {
       });
   }, []);
 
-  const handleClick = () => {
+  const getComments = () => {
     setIsLoadingComments(1);
-    fetch(
+    return fetch(
       `https://nc-news-backend-sgvu.onrender.com/api/articles/${article_id}/comments`
     )
       .then((res) => res.json())
@@ -100,7 +100,7 @@ const Article = () => {
         <p>Body: {article.body}</p>
         <p>Votes: {article.votes + userLikes}</p>
         <Link>
-          <p onClick={handleClick}>Comments: {article.comment_count}</p>
+          <p onClick={getComments}>Comments: {article.comment_count}</p>
         </Link>
         <p>Published: {createdAt.toLocaleDateString(undefined, options)}</p>
         <button
@@ -120,7 +120,9 @@ const Article = () => {
         {error && error.status === "voteError" && <p>{error.msg}</p>}
       </div>
       {isLoadingComments === 1 && <p>Loading comments...</p>}
-      {isLoadingComments === -1 && <CommentList comments={comments} />}
+      {isLoadingComments === -1 && (
+        <CommentList getComments={getComments} comments={comments} />
+      )}
     </article>
   );
 };

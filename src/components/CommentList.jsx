@@ -1,6 +1,10 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import CommentInput from "./CommentInput";
 
-const CommentList = ({ comments }) => {
+const CommentList = ({ comments, getComments }) => {
+  const [error, setError] = useState(null);
+
   const options = {
     year: "numeric",
     month: "long",
@@ -8,9 +12,28 @@ const CommentList = ({ comments }) => {
     hour: "numeric",
     minute: "numeric",
   };
+
+  const handleDelete = (comment_id) => {
+    fetch(
+      `https://nc-news-backend-sgvu.onrender.com/api/comments/${comment_id}`,
+      {
+        method: "DELETE",
+      }
+    )
+      .then((res) => {
+        if (!res.ok) return Promise.reject(res);
+      })
+      .then(() => {
+        getComments();
+      })
+      .catch((error) => {
+        console.log(error);
+        setError({ status: "deleteError", msg: "delete failed" });
+      });
+  };
   return (
     <ul>
-      <CommentInput />
+      <CommentInput getComments={getComments} />
       {comments.map((comment) => {
         const createdAt = new Date(comment.created_at);
         return (
@@ -19,6 +42,17 @@ const CommentList = ({ comments }) => {
             <p>Comment: {comment.body}</p>
             <p>Votes: {comment.votes}</p>
             <p>Commented: {createdAt.toLocaleDateString(undefined, options)}</p>
+            {comment.author === "grumpy19" && (
+              <Link>
+                <p
+                  onClick={() => {
+                    handleDelete(comment.comment_id);
+                  }}
+                >
+                  {error ? error.msg : "delete?"}
+                </p>
+              </Link>
+            )}
           </li>
         );
       })}

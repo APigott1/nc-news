@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
-const CommentInput = () => {
+const CommentInput = ({ getComments }) => {
   const { article_id } = useParams();
   const [commentBody, setCommentBody] = useState("");
-  const [newComments, setNewComments] = useState([]);
+  const [newComment, setNewComment] = useState(null);
   const [isPosting, setIsPosting] = useState(false);
   const [error, setError] = useState(null);
 
@@ -17,17 +17,14 @@ const CommentInput = () => {
   };
 
   const handleSubmit = () => {
-    setNewComments((curComments) => {
+    setNewComment(() => {
       const createdAt = new Date();
-      return [
-        {
-          author: "grumpy19",
-          body: commentBody,
-          votes: 0,
-          created_at: createdAt,
-        },
-        ...curComments,
-      ];
+      return {
+        author: "grumpy19",
+        body: commentBody,
+        votes: 0,
+        created_at: createdAt,
+      };
     });
     setCommentBody("");
     setIsPosting(true);
@@ -44,15 +41,17 @@ const CommentInput = () => {
       .then((res) => {
         setError(null);
         setIsPosting(false);
+
         if (res.ok) return res.json();
         else return Promise.reject(res);
       })
+      .then((commentData) => {
+        getComments();
+      })
       .catch((error) => {
+        console.log(error);
         setError({ status: "postError", msg: "could not submit comment" });
-        setNewComments((curComments) => {
-          const [discarded, ...comments] = curComments;
-          return comments;
-        });
+        setNewComment(null);
       });
   };
 
@@ -75,21 +74,17 @@ const CommentInput = () => {
       </li>
       {isPosting && <p>posting your comment...</p>}
       {error && <p>Error: {error.msg}</p>}
-      {!error &&
-        newComments.length > 0 &&
-        newComments.map((comment, index) => {
-          return (
-            <li key={index} className="comment">
-              <p>Author: {comment.author}</p>
-              <p>Comment: {comment.body}</p>
-              <p>Votes: {comment.votes}</p>
-              <p>
-                Commented:
-                {comment.created_at.toLocaleDateString(undefined, options)}
-              </p>
-            </li>
-          );
-        })}
+      {!error && newComment && (
+        <li className="comment">
+          <p>Author: {newComment.author}</p>
+          <p>Comment: {newComment.body}</p>
+          <p>Votes: {newComment.votes}</p>
+          <p>
+            Commented:{" "}
+            {newComment.created_at.toLocaleDateString(undefined, options)}
+          </p>
+        </li>
+      )}
     </>
   );
 };
