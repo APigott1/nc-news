@@ -5,6 +5,7 @@ const CommentInput = () => {
   const { article_id } = useParams();
   const [commentBody, setCommentBody] = useState("");
   const [newComments, setNewComments] = useState([]);
+  const [isPosting, setIsPosting] = useState(false);
   const [error, setError] = useState(null);
 
   const options = {
@@ -29,6 +30,7 @@ const CommentInput = () => {
       ];
     });
     setCommentBody("");
+    setIsPosting(true);
     fetch(
       `https://nc-news-backend-sgvu.onrender.com/api/articles/${article_id}/comments`,
       {
@@ -40,11 +42,17 @@ const CommentInput = () => {
       }
     )
       .then((res) => {
+        setError(null);
+        setIsPosting(false);
         if (res.ok) return res.json();
         else return Promise.reject(res);
       })
       .catch((error) => {
         setError({ status: "postError", msg: "could not submit comment" });
+        setNewComments((curComments) => {
+          const [discarded, ...comments] = curComments;
+          return comments;
+        });
       });
   };
 
@@ -65,6 +73,7 @@ const CommentInput = () => {
           <button type="submit">submit</button>
         </form>
       </li>
+      {isPosting && <p>posting your comment...</p>}
       {error && <p>Error: {error.msg}</p>}
       {!error &&
         newComments.length > 0 &&
