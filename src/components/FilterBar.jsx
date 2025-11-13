@@ -8,6 +8,18 @@ const FilterBar = () => {
   const [selectedTopic, setSelectedTopic] = useState("all");
   const [selectedSort, setSelectedSort] = useState("date");
   const [selectedOrder, setSelectedOrder] = useState("desc");
+  const [ascText, setAscText] = useState("oldest first");
+  const [descText, setDescText] = useState("most recent first");
+
+  useEffect(() => {
+    if (selectedSort === "date") {
+      setAscText("oldest");
+      setDescText("most recent");
+    } else {
+      setAscText("least");
+      setDescText("most");
+    }
+  }, [selectedSort]);
 
   useEffect(() => {
     if (slug) {
@@ -97,7 +109,7 @@ const FilterBar = () => {
           checked={selectedOrder === "asc"}
           onChange={(event) => setSelectedOrder(event.target.value)}
         ></input>
-        <label htmlFor="asc">ascending</label>
+        <label htmlFor="asc">{ascText}</label>
         <input
           type="radio"
           id="desc"
@@ -106,7 +118,7 @@ const FilterBar = () => {
           checked={selectedOrder === "desc"}
           onChange={(event) => setSelectedOrder(event.target.value)}
         ></input>
-        <label htmlFor="desc">descending</label>
+        <label htmlFor="desc">{descText}</label>
       </div>
     </div>
   );
