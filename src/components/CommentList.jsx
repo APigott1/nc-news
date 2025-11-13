@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import CommentInput from "./CommentInput";
+import { UserContext } from "../contexts/User";
 
 const CommentList = ({ comments, getComments }) => {
+  const { user } = useContext(UserContext);
   const [error, setError] = useState(null);
 
   const options = {
@@ -42,7 +44,7 @@ const CommentList = ({ comments, getComments }) => {
             <p>Comment: {comment.body}</p>
             <p>Votes: {comment.votes}</p>
             <p>Commented: {createdAt.toLocaleDateString(undefined, options)}</p>
-            {comment.author === "grumpy19" && (
+            {comment.author === user.username && (
               <Link>
                 <p
                   onClick={() => {

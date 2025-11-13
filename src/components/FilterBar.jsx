@@ -49,7 +49,6 @@ const FilterBar = () => {
     if (queries.length > 0) {
       queryStr = "?" + queries.join("&");
     }
-    console.log(queryStr);
     navigate(queryStr);
   }, [selectedOrder, selectedSort]);
 

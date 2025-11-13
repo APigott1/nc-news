@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
+import { UserContext } from "../contexts/User";
 
 const CommentInput = ({ getComments }) => {
+  const { user } = useContext(UserContext);
   const { article_id } = useParams();
   const [commentBody, setCommentBody] = useState("");
   const [newComment, setNewComment] = useState(null);
@@ -20,7 +22,7 @@ const CommentInput = ({ getComments }) => {
     setNewComment(() => {
       const createdAt = new Date();
       return {
-        author: "grumpy19",
+        author: user.username,
         body: commentBody,
         votes: 0,
         created_at: createdAt,
@@ -35,7 +37,7 @@ const CommentInput = ({ getComments }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username: "grumpy19", body: commentBody }),
+        body: JSON.stringify({ username: user.username, body: commentBody }),
       }
     )
       .then((res) => {
