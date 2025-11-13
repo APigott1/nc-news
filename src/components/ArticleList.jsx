@@ -24,6 +24,10 @@ const ArticleList = () => {
     url += searchParams.toString();
   }
 
+  const capitalise = (text) => {
+    return text[0].toUpperCase() + text.slice(1);
+  };
+
   useEffect(() => {
     fetch(url)
       .then((res) => {
@@ -55,7 +59,7 @@ const ArticleList = () => {
   return (
     <>
       <FilterBar />
-      {slug && <h2>Topic: {slug}</h2>}
+      {slug && <h2 className="topic">{capitalise(slug)}</h2>}
       {isLoading ? (
         <h2>Loading...</h2>
       ) : (

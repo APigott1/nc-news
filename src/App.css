@@ -1,7 +1,12 @@
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 20px;
 }
 
 .user-info {
@@ -24,6 +29,10 @@ header {
   border-style: solid;
   border-radius: 15px;
   border-color: black;
+}
+
+.article-title {
+  text-align: center;
 }
 
 .article-info {
@@ -54,6 +63,31 @@ header {
 
 .comment {
   list-style-type: none;
+  border-style: solid;
+  border-radius: 15px;
+  border-color: black;
+  padding: 10px;
+  margin: 10px;
+}
+
+.filter {
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  border-style: solid;
+  border-radius: 15px;
+  border-color: black;
+  padding: 10px;
+  margin: 10px;
+}
+
+.field {
+  margin: 10px;
+}
+
+.topic {
+  text-align: center;
+  justify-content: center;
   border-style: solid;
   border-radius: 15px;
   border-color: black;

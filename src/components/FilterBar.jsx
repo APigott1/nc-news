@@ -1,12 +1,21 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const FilterBar = () => {
+  const { slug } = useParams();
   const navigate = useNavigate();
   const [topics, setTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState("all");
   const [selectedSort, setSelectedSort] = useState("date");
   const [selectedOrder, setSelectedOrder] = useState("desc");
+
+  useEffect(() => {
+    if (slug) {
+      setSelectedTopic(slug);
+    } else {
+      setSelectedTopic("all");
+    }
+  }, [slug]);
 
   useEffect(() => {
     fetch("https://nc-news-backend-sgvu.onrender.com/api/topics")
@@ -27,7 +36,7 @@ const FilterBar = () => {
     }
   }, [selectedTopic]);
 
-  const generateQuery = () => {
+  useEffect(() => {
     const queries = [];
     let queryStr = "";
     if (selectedSort !== "date") {
@@ -42,37 +51,35 @@ const FilterBar = () => {
     }
     console.log(queryStr);
     navigate(queryStr);
-  };
-  return (
-    <>
-      <label htmlFor="topics">Topics: </label>
-      <select
-        id="topics"
-        value={selectedTopic}
-        onChange={(event) => {
-          setSelectedTopic(event.target.value);
-        }}
-      >
-        <option value="all">all</option>
-        {topics.length > 0 &&
-          topics.map((topics) => (
-            <option key={topics.slug} value={topics.slug}>
-              {topics.slug}
-            </option>
-          ))}
-      </select>
+  }, [selectedOrder, selectedSort]);
 
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          generateQuery();
-        }}
-      >
+  return (
+    <div className="filter">
+      <div className="field">
+        <label htmlFor="topics">Topics: </label>
+        <select
+          id="topics"
+          value={selectedTopic}
+          onChange={(event) => {
+            setSelectedTopic(event.target.value);
+          }}
+        >
+          <option value="all">all</option>
+          {topics.length > 0 &&
+            topics.map((topics) => (
+              <option key={topics.slug} value={topics.slug}>
+                {topics.slug}
+              </option>
+            ))}
+        </select>
+      </div>
+
+      <div className="field">
         <label htmlFor="sort-by">Sort by: </label>
         <select
           id="sort-by"
           value={selectedSort}
-          onChange={(event) => {
+          onInput={(event) => {
             setSelectedSort(event.target.value);
           }}
         >
@@ -80,11 +87,15 @@ const FilterBar = () => {
           <option value="comment_count">comment count</option>
           <option value="votes">votes</option>
         </select>
+      </div>
+
+      <div className="field">
         <input
           type="radio"
           id="asc"
           name="order"
           value="asc"
+          checked={selectedOrder === "asc"}
           onChange={(event) => setSelectedOrder(event.target.value)}
         ></input>
         <label htmlFor="asc">ascending</label>
@@ -93,13 +104,12 @@ const FilterBar = () => {
           id="desc"
           name="order"
           value="desc"
+          checked={selectedOrder === "desc"}
           onChange={(event) => setSelectedOrder(event.target.value)}
-          defaultChecked
         ></input>
         <label htmlFor="desc">descending</label>
-        <button>Submit Query</button>
-      </form>
-    </>
+      </div>
+    </div>
   );
 };
 

@@ -96,7 +96,9 @@ const Article = () => {
         />
 
         <p>Author: {article.author}</p>
-        <p>Topic: {article.topic}</p>
+        <Link to={`/topics/${article.topic}`}>
+          <p>Topic: {article.topic}</p>
+        </Link>
         <p>Body: {article.body}</p>
         <p>Votes: {article.votes + userLikes}</p>
         <Link>

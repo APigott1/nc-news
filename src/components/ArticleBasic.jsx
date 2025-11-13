@@ -9,7 +9,7 @@ const ArticleBasic = ({ article }) => {
   };
   return (
     <li className="article-basic">
-      <h2>{article.title}</h2>
+      <h2 className="article-title">{article.title}</h2>
 
       <div className="article-contents">
         <img
