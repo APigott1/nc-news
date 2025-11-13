@@ -1,18 +1,27 @@
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import FilterBar from "./FilterBar";
 import ArticleBasic from "./ArticleBasic";
 
 const ArticleList = () => {
   const { slug } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams({});
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   let url = "https://nc-news-backend-sgvu.onrender.com/api/articles";
 
-  if (slug) {
-    url += `?topic=${slug}`;
+  if (slug || searchParams.toString().length > 0) {
+    url += "?";
+  }
+
+  if (slug && searchParams.toString().length === 0) {
+    url += `topic=${slug}`;
+  } else if (slug && searchParams.toString().length > 0) {
+    url += `topic=${slug}&` + searchParams.toString();
+  } else {
+    url += searchParams.toString();
   }
 
   useEffect(() => {
@@ -46,6 +55,7 @@ const ArticleList = () => {
   return (
     <>
       <FilterBar />
+      {slug && <h2>Topic: {slug}</h2>}
       {isLoading ? (
         <h2>Loading...</h2>
       ) : (
