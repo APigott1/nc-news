@@ -10,6 +10,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<ArticleList />} />
+        <Route path="/topics/:slug" element={<ArticleList />} />
         <Route path="/articles/:article_id" element={<Article />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

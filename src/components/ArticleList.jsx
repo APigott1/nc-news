@@ -1,20 +1,47 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import FilterBar from "./FilterBar";
 import ArticleBasic from "./ArticleBasic";
 
 const ArticleList = () => {
+  const { slug } = useParams();
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  let url = "https://nc-news-backend-sgvu.onrender.com/api/articles";
+
+  if (slug) {
+    url += `?topic=${slug}`;
+  }
 
   useEffect(() => {
-    fetch("https://nc-news-backend-sgvu.onrender.com/api/articles")
-      .then((res) => res.json())
+    fetch(url)
+      .then((res) => {
+        setError(null);
+        if (res.ok) return res.json();
+        else return Promise.reject(res);
+      })
       .then((articlesData) => {
         setArticles(articlesData.articles);
         setIsLoading(false);
+      })
+      .catch((error) => {
+        setError({
+          status: "error",
+          msg: "could not find what you were looking for.",
+        });
       });
-  }, []);
+  }, [url]);
+
+  if (error) {
+    return (
+      <>
+        <FilterBar />
+        <h2>{error.msg}</h2>
+      </>
+    );
+  }
 
   return (
     <>
