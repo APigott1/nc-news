@@ -5,7 +5,7 @@ import ArticleBasic from "./ArticleBasic";
 
 const ArticleList = () => {
   const { slug } = useParams();
-  const [searchParams, setSearchParams] = useSearchParams({});
+  const [searchParams, setSearchParams] = useSearchParams();
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);

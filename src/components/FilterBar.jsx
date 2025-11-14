@@ -103,15 +103,6 @@ const FilterBar = () => {
       <div className="field">
         <input
           type="radio"
-          id="asc"
-          name="order"
-          value="asc"
-          checked={selectedOrder === "asc"}
-          onChange={(event) => setSelectedOrder(event.target.value)}
-        ></input>
-        <label htmlFor="asc">{ascText}</label>
-        <input
-          type="radio"
           id="desc"
           name="order"
           value="desc"
@@ -119,6 +110,15 @@ const FilterBar = () => {
           onChange={(event) => setSelectedOrder(event.target.value)}
         ></input>
         <label htmlFor="desc">{descText}</label>
+        <input
+          type="radio"
+          id="asc"
+          name="order"
+          value="asc"
+          checked={selectedOrder === "asc"}
+          onChange={(event) => setSelectedOrder(event.target.value)}
+        ></input>
+        <label htmlFor="asc">{ascText}</label>
       </div>
     </div>
   );
