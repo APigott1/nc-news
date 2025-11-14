@@ -1,12 +1,6 @@
+import getDateString from "../utils/getDateString";
+
 const ArticleBasic = ({ article }) => {
-  const createdAt = new Date(article.created_at);
-  const options = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-  };
   return (
     <li className="article-basic">
       <h2 className="article-title">{article.title}</h2>
@@ -23,7 +17,7 @@ const ArticleBasic = ({ article }) => {
           <p>Topic: {article.topic}</p>
           <p>Votes: {article.votes}</p>
           <p>Comments: {article.comment_count}</p>
-          <p>Published: {createdAt.toLocaleDateString(undefined, options)}</p>
+          <p>Published: {getDateString(article)}</p>
         </div>
       </div>
     </li>

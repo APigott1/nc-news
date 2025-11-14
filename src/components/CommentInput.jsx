@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import { UserContext } from "../contexts/User";
+import getDateString from "../utils/getDateString";
 
 const CommentInput = ({ getComments }) => {
   const { user } = useContext(UserContext);
@@ -9,14 +10,6 @@ const CommentInput = ({ getComments }) => {
   const [newComment, setNewComment] = useState(null);
   const [isPosting, setIsPosting] = useState(false);
   const [error, setError] = useState(null);
-
-  const options = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-  };
 
   const handleSubmit = () => {
     setNewComment(() => {
@@ -81,10 +74,7 @@ const CommentInput = ({ getComments }) => {
           <p>Author: {newComment.author}</p>
           <p>Comment: {newComment.body}</p>
           <p>Votes: {newComment.votes}</p>
-          <p>
-            Commented:{" "}
-            {newComment.created_at.toLocaleDateString(undefined, options)}
-          </p>
+          <p>Commented: {getDateString(newComment)}</p>
         </li>
       )}
     </>

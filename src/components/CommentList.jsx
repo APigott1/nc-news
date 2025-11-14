@@ -2,18 +2,11 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import CommentInput from "./CommentInput";
 import { UserContext } from "../contexts/User";
+import getDateString from "../utils/getDateString";
 
 const CommentList = ({ comments, getComments }) => {
   const { user } = useContext(UserContext);
   const [error, setError] = useState(null);
-
-  const options = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-  };
 
   const handleDelete = (comment_id) => {
     fetch(
@@ -43,7 +36,7 @@ const CommentList = ({ comments, getComments }) => {
             <p>Author: {comment.author}</p>
             <p>Comment: {comment.body}</p>
             <p>Votes: {comment.votes}</p>
-            <p>Commented: {createdAt.toLocaleDateString(undefined, options)}</p>
+            <p>Commented: {getDateString(comment)}</p>
             {comment.author === user.username && (
               <Link>
                 <p

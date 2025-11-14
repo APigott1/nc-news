@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import CommentList from "./CommentList";
+import getDateString from "../utils/getDateString";
 
 const Article = () => {
   const { article_id } = useParams();
@@ -10,15 +11,6 @@ const Article = () => {
   const [comments, setComments] = useState([]);
   const [error, setError] = useState(null);
   const [userLikes, setUserLikes] = useState(0);
-
-  const createdAt = new Date(article.created_at);
-  const options = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-  };
 
   useEffect(() => {
     fetch(
@@ -104,7 +96,7 @@ const Article = () => {
         <Link>
           <p onClick={getComments}>Comments: {article.comment_count}</p>
         </Link>
-        <p>Published: {createdAt.toLocaleDateString(undefined, options)}</p>
+        <p>Published: {getDateString(article)}</p>
         <button
           onClick={() => {
             handleVote(1);

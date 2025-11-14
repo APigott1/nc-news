@@ -1,16 +1,45 @@
-# React + Vite
+# About
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project implements a React frontend with vite to create a web app to display news articles. The news articles are served from a hosted version of the backend created in the following repository [nc-news-backend](https://github.com/APigott1/nc-news-backend). This web app has a list of articles as the home page. You can sort the articles shown by topic, date, comments and votes. You can click on an article to view its contents. You can like or dislike an article to update its votes. You can show the comments attached to an article and write your own comment. This example app has you logged in as a dummy user "grumpy19". You can delete comments made by "grumpy19".
 
-Currently, two official plugins are available:
+# Hosted version
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[nc-news](https://northcoder-news-alex-pigott.netlify.app)
 
-## React Compiler
+# Backend repository
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+[nc-news-backend](https://github.com/APigott1/nc-news-backend)
 
-## Expanding the ESLint configuration
+# Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Prerequisites
+
+[Node.js](https://nodejs.org/en/download) v24.7.0
+
+## Cloning
+
+To clone this repository run:
+
+```
+git clone https://github.com/APigott1/nc-news.git
+```
+
+## npm packages
+
+To install the npm dependencies run:
+
+```
+npm install
+```
+
+## Usage
+
+To start a local server run:
+
+```
+npm run dev
+```
+
+### Info
+
+This portfolio project was created as part of a Digital Skills Bootcamp in Software Engineering provided by [Northcoders](https://northcoders.com/)
